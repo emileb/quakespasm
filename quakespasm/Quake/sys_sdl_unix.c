@@ -252,6 +252,9 @@ static void Sys_GetUserdir (char *dst, size_t dstsize)
 	const char	*home_dir = NULL;
 	struct passwd	*pwent;
 
+#ifdef __ANDROID__
+	home_dir = getenv("HOME");
+#else
 	pwent = getpwuid( getuid() );
 	if (pwent == NULL)
 		perror("getpwuid");
@@ -261,7 +264,7 @@ static void Sys_GetUserdir (char *dst, size_t dstsize)
 		home_dir = getenv("HOME");
 	if (home_dir == NULL)
 		Sys_Error ("Couldn't determine userspace directory");
-
+#endif
 /* what would be a maximum path for a file in the user's directory...
  * $HOME/SYS_USERDIR/game_dir/dirname1/dirname2/dirname3/filename.ext
  * still fits in the MAX_OSPATH == 256 definition, but just in case :
@@ -271,8 +274,9 @@ static void Sys_GetUserdir (char *dst, size_t dstsize)
 		Sys_Error ("Insufficient array size for userspace directory");
 
 	q_snprintf (dst, dstsize, "%s/%s", home_dir, SYS_USERDIR);
+	Sys_Printf("USer dir = %s\n", dst);
 }
-#endif	/* DO_USERDIRS */
+#endif	/* ]#DO_USERDIRS */
 
 #ifdef PLATFORM_OSX
 static char *OSX_StripAppBundle (char *dir)
@@ -370,6 +374,13 @@ void Sys_mkdir (const char *path)
 static const char errortxt1[] = "\nERROR-OUT BEGIN\n\n";
 static const char errortxt2[] = "\nQUAKE ERROR: ";
 
+#ifdef __ANDROID__
+#include <android/log.h>
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,"JNITouchControlsUtils", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "JNITouchControlsUtils", __VA_ARGS__))
+#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR,"JNITouchControlsUtils", __VA_ARGS__))
+#endif
+
 void Sys_Error (const char *error, ...)
 {
 	va_list		argptr;
@@ -377,9 +388,15 @@ void Sys_Error (const char *error, ...)
 
 	host_parms->errstate++;
 
+
+
 	va_start (argptr, error);
 	q_vsnprintf (text, sizeof(text), error, argptr);
 	va_end (argptr);
+
+#ifdef __ANDROID__
+	LOGI("GLQUAKE: %s",text);
+#endif
 
 	fputs (errortxt1, stderr);
 	Host_Shutdown ();
@@ -392,10 +409,21 @@ void Sys_Error (const char *error, ...)
 	exit (1);
 }
 
+
+
 void Sys_Printf (const char *fmt, ...)
 {
 	va_list argptr;
 
+#ifdef __ANDROID__
+	char		text[1024];
+
+	va_start (argptr,fmt);
+	vsprintf (text,fmt,argptr);
+	va_end (argptr);
+
+	LOGI("GLQUAKE: %s",text);
+#endif
 	va_start(argptr, fmt);
 	vprintf(fmt, argptr);
 	va_end(argptr);

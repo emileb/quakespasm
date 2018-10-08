@@ -470,7 +470,10 @@ void Mod_LoadTextures (lump_t *l)
 		tx = (texture_t *) Hunk_AllocName (sizeof(texture_t) +pixels, loadname );
 		loadmodel->textures[i] = tx;
 
-		memcpy (tx->name, mt->name, sizeof(tx->name));
+        // __ANDROID__ Needed to fix clang stupid alignement optimisation
+        char *txname = tx->name;
+        char *mtname = mt->name;
+		memcpy (txname, mtname, sizeof(tx->name));
 		tx->width = mt->width;
 		tx->height = mt->height;
 		for (j=0 ; j<MIPLEVELS ; j++)
@@ -2862,4 +2865,3 @@ void Mod_Print (void)
 	}
 	Con_Printf ("%i models\n",mod_numknown); //johnfitz -- print the total too
 }
-

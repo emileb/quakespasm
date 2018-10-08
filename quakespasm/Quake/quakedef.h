@@ -226,7 +226,14 @@ typedef struct
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
 #if defined(USE_SDL2)
 #include <SDL2/SDL.h>
+
+#ifdef __ANDROID__
 #include <SDL2/SDL_opengl.h>
+#include "jwzgles/jwzgles.h"
+#else
+#include <SDL2/SDL_opengl.h>
+#endif
+
 #else
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>

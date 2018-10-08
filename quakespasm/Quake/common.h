@@ -304,5 +304,11 @@ extern qboolean		standard_quake, rogue, hipnotic;
 extern qboolean		fitzmode;
 	/* if true, run in fitzquake mode disabling custom quakespasm hacks */
 
+
+inline int ualcharint(uint8_t *bar)
+{
+	return bar[0] | (bar[1] << 8) | (bar[2] << 16) | (bar[3] << 24);
+}
+
 #endif	/* _Q_COMMON_H */
 

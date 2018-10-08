@@ -737,10 +737,16 @@ void IN_MouseMove(usercmd_t *cmd)
 	}
 }
 
+#ifdef __ANDROID__
+void IN_Move_Android (usercmd_t *cmd);
+#endif
 void IN_Move(usercmd_t *cmd)
 {
 	IN_JoyMove(cmd);
 	IN_MouseMove(cmd);
+#ifdef __ANDROID__
+    IN_Move_Android (cmd);
+#endif
 }
 
 void IN_ClearStates (void)
@@ -843,7 +849,7 @@ static inline int IN_SDL_KeysymToQuakeKey(SDLKey sym)
 	case SDLK_BREAK: return K_PAUSE;
 	case SDLK_PAUSE: return K_PAUSE;
 
-	case SDLK_WORLD_18: return '~'; // the '²' key
+	case SDLK_WORLD_18: return '~'; // the 'ï¿½' key
 
 	default: return 0;
 	}
