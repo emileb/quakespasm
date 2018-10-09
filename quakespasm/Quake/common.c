@@ -1281,7 +1281,7 @@ static void COM_CheckRegistered (void)
 	int		h;
 	unsigned short	check[128];
 	int		i;
-
+#ifndef __ANDROID__
 	COM_OpenFile("gfx/pop.lmp", &h, NULL);
 
 	if (h == -1)
@@ -1305,7 +1305,7 @@ static void COM_CheckRegistered (void)
 		if (pop[i] != (unsigned short)BigShort (check[i]))
 			Sys_Error ("Corrupted data file.");
 	}
-
+#endif
 	for (i = 0; com_cmdline[i]; i++)
 	{
 		if (com_cmdline[i]!= ' ')
