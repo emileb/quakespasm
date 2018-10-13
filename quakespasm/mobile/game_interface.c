@@ -140,6 +140,11 @@ void PortableAction(int state, int action)
         case PORT_MALICE_CYCLE:
             if (state)
                 PortableCommand("impulse 14\n");
+            break;
+        case PORT_ACT_CONSOLE:
+            if (state)
+                PortableCommand("toggleconsole");
+            break;
 	    }
 	}
 }
