@@ -64,6 +64,11 @@ void PortableAction(int state, int action)
 
             return;
         }
+        else if( action == PORT_ACT_CONSOLE )
+        {
+            if (state)
+               PortableCommand("toggleconsole");
+        }
     }
     else
     {
@@ -144,6 +149,12 @@ void PortableAction(int state, int action)
         case PORT_ACT_CONSOLE:
             if (state)
                 PortableCommand("toggleconsole");
+            break;
+        case PORT_ACT_MP_SCORES:
+            if(state)
+                PortableCommand("+showscores");
+            else
+                PortableCommand("-showscores");
             break;
 	    }
 	}
@@ -240,16 +251,20 @@ void PortableLookYaw(int mode, float yaw)
 	}
 }
 
-/////////////////////
-// Movement handling
-////
-void IN_Move_Android (usercmd_t *cmd)
+void IN_Android_Commands()
 {
 	if (quickCommand)
 	{
 		Cmd_ExecuteString(quickCommand, src_command);
 		quickCommand = 0;
 	}
+}
+
+/////////////////////
+// Movement handling
+////
+void IN_Move_Android (usercmd_t *cmd)
+{
 
     cmd->sidemove += sidemove * 400;
 	cmd->forwardmove += forwardmove * 400;

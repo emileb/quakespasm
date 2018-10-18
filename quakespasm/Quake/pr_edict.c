@@ -974,8 +974,8 @@ void ED_LoadFromFile (const char *data)
 	edict_t		*ent = NULL;
 	int		inhibit = 0;
 
-	pr_global_struct->time = sv.time;
-
+	//pr_global_struct->time = sv.time;
+memcpy(&pr_global_struct->time, &sv.time, sizeof(pr_global_struct->time));
 	// parse ents
 	while (1)
 	{
@@ -1091,8 +1091,15 @@ void PR_LoadProgs (void)
 	pr_fielddefs = (ddef_t *)((byte *)progs + progs->ofs_fielddefs);
 	pr_statements = (dstatement_t *)((byte *)progs + progs->ofs_statements);
 
+    // Memory leak!!
+    //pr_global_struct = malloc(sizeof(globalvars_t));
+    //memcpy(pr_global_struct,(byte *)progs + progs->ofs_globals,sizeof(globalvars_t));
+
 	pr_global_struct = (globalvars_t *)((byte *)progs + progs->ofs_globals);
 	pr_globals = (float *)pr_global_struct;
+
+	//pr_globals = malloc(progs->numglobals*4);
+    //memcpy(pr_globals,pr_global_struct,progs->numglobals*4);
 
 	// byte swap the lumps
 	for (i = 0; i < progs->numstatements; i++)

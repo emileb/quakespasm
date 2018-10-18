@@ -1452,7 +1452,8 @@ void SV_SpawnServer (const char *server)
 	pr_global_struct->mapname = PR_SetEngineString(sv.name);
 
 // serverflags are for cross level information (sigils)
-	pr_global_struct->serverflags = svs.serverflags;
+	//pr_global_struct->serverflags = svs.serverflags;
+    memcpy(&pr_global_struct->serverflags, &svs.serverflags, sizeof(pr_global_struct->serverflags));
 
 	ED_LoadFromFile (sv.worldmodel->entities);
 

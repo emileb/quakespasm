@@ -4,15 +4,15 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := quakespasm
 
-LOCAL_CFLAGS := -DQUAKESPASM  -DDO_USERDIRS=1 -DENGINE_NAME=\"quakespasm\" -DUSE_SDL2 -DNO_SDL_CONFIG -DHAVE_JWZGLES
+LOCAL_CFLAGS := -DQUAKESPASM -DUSE_CODEC_VORBIS -DUSE_CODEC_MP3 -DDO_USERDIRS=1 -DENGINE_NAME=\"quakespasm\" -DUSE_SDL2 -DNO_SDL_CONFIG -DHAVE_JWZGLES
 
 LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \
                         $(TOP_DIR) \
                         $(TOP_DIR)/MobileTouchControls \
                         $(TOP_DIR)/AudioLibs_OpenTouch/liboggvorbis/include \
+                        $(TOP_DIR)/AudioLibs_OpenTouch/libmpg123 \
                         $(TOP_DIR)/Clibs_OpenTouch \
                         $(TOP_DIR)/Clibs_OpenTouch/quake \
-
 
 
 MUSIC_OBJS := \
@@ -111,7 +111,7 @@ LOCAL_SRC_FILES :=  $(OBJS:.o=.c) \
 
 
 LOCAL_LDLIBS := -lEGL -ldl -llog -lz -lGLESv1_CM
-LOCAL_STATIC_LIBRARIES := sigc libzip libpng logwritter license_static jwzgles
+LOCAL_STATIC_LIBRARIES := sigc libzip libpng logwritter license_static mpg123 jwzgles
 LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer
 
 include $(BUILD_SHARED_LIBRARY)

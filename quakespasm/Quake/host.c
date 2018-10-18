@@ -706,7 +706,10 @@ void _Host_Frame (float time)
 // server operations
 //
 //-------------------
-
+#ifdef __ANDROID__
+    void IN_Android_Commands();
+    IN_Android_Commands();
+#endif
 // check for commands typed to the host
 	Host_GetConsoleCommands ();
 

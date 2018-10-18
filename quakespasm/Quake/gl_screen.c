@@ -972,6 +972,9 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 		 lastkey != K_ESCAPE &&
 		 lastkey != K_ABUTTON &&
 		 lastkey != K_BBUTTON &&
+ #ifdef __ANDROID__
+        lastkey != K_ENTER &&
+ #endif
 		 time2 <= time1);
 	Key_EndInputGrab ();
 
@@ -981,8 +984,11 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 	if (time2 > time1)
 		return false;
 	//johnfitz
-
+ #ifdef __ANDROID__
+ 	return (lastchar == 'y' || lastchar == 'Y' || lastchar == K_ENTER || lastkey == K_ABUTTON);
+ #else
 	return (lastchar == 'y' || lastchar == 'Y' || lastkey == K_ABUTTON);
+#endif
 }
 
 
