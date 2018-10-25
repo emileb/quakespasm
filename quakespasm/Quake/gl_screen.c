@@ -984,9 +984,9 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 	if (time2 > time1)
 		return false;
 	//johnfitz
- #ifdef __ANDROID__
- 	return (lastchar == 'y' || lastchar == 'Y' || lastchar == K_ENTER || lastkey == K_ABUTTON);
- #else
+#ifdef __ANDROID__
+ 	return (lastchar == 'y' || lastchar == 'Y' || lastkey == K_ENTER || lastkey == K_ABUTTON);
+#else
 	return (lastchar == 'y' || lastchar == 'Y' || lastkey == K_ABUTTON);
 #endif
 }

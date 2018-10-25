@@ -49,9 +49,16 @@ extern kbutton_t	in_lookup, in_lookdown, in_moveleft, in_moveright;
 extern kbutton_t	in_strafe, in_speed, in_use, in_jump, in_attack;
 extern kbutton_t	in_up, in_down;
 
+static int scoresShown = 0;
 void PortableAction(int state, int action)
 {
 	LOGI("PortableAction %d %d",state, action);
+
+	if ((action >= PORT_ACT_CUSTOM_0) && (action <= PORT_ACT_CUSTOM_15))
+    {
+        if( action <= PORT_ACT_CUSTOM_7 )
+            PortableKeyEvent(state, SDL_SCANCODE_H + action - PORT_ACT_CUSTOM_0, 0);
+    }
 
 	if (( PortableGetScreenMode() == TS_MENU ) || ( PortableGetScreenMode() == TS_BLANK )  || ( PortableGetScreenMode() == TS_Y_N ))
     {
@@ -119,7 +126,38 @@ void PortableAction(int state, int action)
 	    case PORT_ACT_DOWN:
 	        (state)?KeyDownPort(&in_down):KeyUpPort(&in_down);
 	        break;
-	        //TODO make fifo, possibly not thread safe!!
+        case PORT_ACT_WEAP1:
+            if ( state )
+                PortableCommand("impulse 1\n");
+            break;
+        case PORT_ACT_WEAP2:
+            if ( state )
+                PortableCommand("impulse 2\n");
+            break;
+        case PORT_ACT_WEAP3:
+            if ( state )
+                PortableCommand("impulse 3\n");
+            break;
+        case PORT_ACT_WEAP4:
+            if ( state )
+                PortableCommand("impulse 4\n");
+            break;
+        case PORT_ACT_WEAP5:
+            if ( state )
+                PortableCommand("impulse 5\n");
+            break;
+        case PORT_ACT_WEAP6:
+            if ( state )
+                PortableCommand("impulse 6\n");
+            break;
+        case PORT_ACT_WEAP7:
+            if ( state )
+                PortableCommand("impulse 7\n");
+            break;
+        case PORT_ACT_WEAP8:
+            if ( state )
+                PortableCommand("impulse 8\n");
+            break;
 	    case PORT_ACT_NEXT_WEP:
 	        if (state)
 	            PortableCommand("impulse 10\n");
@@ -152,9 +190,13 @@ void PortableAction(int state, int action)
             break;
         case PORT_ACT_MP_SCORES:
             if(state)
-                PortableCommand("+showscores");
-            else
-                PortableCommand("-showscores");
+            {
+                if (scoresShown)
+                    PortableCommand("-scores\n");
+                else
+                    PortableCommand("+scores\n");
+                scoresShown = !scoresShown;
+            }
             break;
 	    }
 	}
