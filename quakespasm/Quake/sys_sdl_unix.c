@@ -379,6 +379,7 @@ static const char errortxt2[] = "\nQUAKE ERROR: ";
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,"JNITouchControlsUtils", __VA_ARGS__))
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "JNITouchControlsUtils", __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR,"JNITouchControlsUtils", __VA_ARGS__))
+#include "LogWritter.h"
 #endif
 
 void Sys_Error (const char *error, ...)
@@ -396,6 +397,7 @@ void Sys_Error (const char *error, ...)
 
 #ifdef __ANDROID__
 	LOGI("GLQUAKE: %s",text);
+    LogWritter_Write(text);
 #endif
 
 	fputs (errortxt1, stderr);
@@ -423,6 +425,7 @@ void Sys_Printf (const char *fmt, ...)
 	va_end (argptr);
 
 	LOGI("GLQUAKE: %s",text);
+    LogWritter_Write(text);
 #endif
 	va_start(argptr, fmt);
 	vprintf(fmt, argptr);
