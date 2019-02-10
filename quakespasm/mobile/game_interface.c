@@ -192,9 +192,9 @@ void PortableAction(int state, int action)
             if(state)
             {
                 if (scoresShown)
-                    PortableCommand("-scores\n");
+                    PortableCommand("-showscores\n");
                 else
-                    PortableCommand("+scores\n");
+                    PortableCommand("+showscores\n");
                 scoresShown = !scoresShown;
             }
             break;
