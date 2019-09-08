@@ -307,6 +307,9 @@ void IN_Android_Commands()
 ////
 void IN_Move_Android (usercmd_t *cmd)
 {
+    int blockGamepad( void );
+    if( blockGamepad() )
+        return;
 
     cmd->sidemove += sidemove * 400;
 	cmd->forwardmove += forwardmove * 400;
