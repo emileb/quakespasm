@@ -308,20 +308,26 @@ void IN_Android_Commands()
 void IN_Move_Android (usercmd_t *cmd)
 {
     int blockGamepad( void );
-    if( blockGamepad() )
-        return;
+    int blockMove = blockGamepad() & ANALOGUE_AXIS_FWD;
+    int blockLook = blockGamepad() & ANALOGUE_AXIS_PITCH;
 
-    cmd->sidemove += sidemove * 400;
-	cmd->forwardmove += forwardmove * 400;
 
-    cl.viewangles[YAW] +=  look_yaw_mouse * 400;
-	look_yaw_mouse = 0;
-    cl.viewangles[YAW] += look_yaw_joy * 6 * (host_frametime * 1000.f / 16.f); // Presume was scaled at 60FPS;
+    if( !blockMove )
+    {
+        cmd->sidemove += sidemove * 400;
+	    cmd->forwardmove += forwardmove * 400;
+    }
 
-    cl.viewangles[PITCH] -= look_pitch_mouse * 150;
-    look_pitch_mouse = 0;
-    cl.viewangles[PITCH] += look_pitch_joy * 6 * (host_frametime * 1000.f / 16.f); // Presume was scaled at 60FPS;
+    if( !blockLook )
+    {
+        cl.viewangles[YAW] +=  look_yaw_mouse * 400;
+        look_yaw_mouse = 0;
+        cl.viewangles[YAW] += look_yaw_joy * 6 * (host_frametime * 1000.f / 16.f); // Presume was scaled at 60FPS;
 
+        cl.viewangles[PITCH] -= look_pitch_mouse * 150;
+        look_pitch_mouse = 0;
+        cl.viewangles[PITCH] += look_pitch_joy * 6 * (host_frametime * 1000.f / 16.f); // Presume was scaled at 60FPS;
+    }
 
 	V_StopPitchDrift ();
 
