@@ -376,11 +376,7 @@ typedef struct {
 
 #define	MAXALIASVERTS	2000 //johnfitz -- was 1024
 #define	MAXALIASFRAMES	256
-#ifdef __ANDROID__
-#define	MAXALIASTRIS	(2048 + 1024)
-#else
-#define	MAXALIASTRIS	2048
-#endif
+#define	MAXALIASTRIS	4096 //ericw -- was 2048
 extern	aliashdr_t	*pheader;
 extern	stvert_t	stverts[MAXALIASVERTS];
 extern	mtriangle_t	triangles[MAXALIASTRIS];

@@ -25,6 +25,7 @@ MUSIC_OBJS := \
        	snd_mpg123.o \
        	snd_mikmod.o \
        	snd_xmp.o \
+       	snd_mp3tag.o \
        	snd_umx.o
 
 
