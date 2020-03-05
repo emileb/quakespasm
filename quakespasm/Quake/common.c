@@ -2248,6 +2248,16 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	// start up with GAMENAME by default (id1)
 	COM_AddGameDirectory (com_basedir, GAMENAME);
 
+#ifdef __ANDROID__
+	i = COM_CheckParm ("-cddir");
+	const char *cddir = 0;
+	if (i && i < com_argc-1)
+	{
+		cddir = com_argv[i + 1];
+		Con_Printf ("Using cddir = %s\n", cddir);
+		COM_AddGameDirectory (cddir, "id1");
+	}
+#endif
 	/* this is the end of our base searchpath:
 	 * any set gamedirs, such as those from -game command line
 	 * arguments or by the 'game' console command will be freed
@@ -2276,6 +2286,12 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 		if (COM_CheckParm ("-quoth") && !q_strcasecmp(p, "quoth")) p = NULL;
 		if (p != NULL) {
 			COM_AddGameDirectory (com_basedir, p);
+#ifdef __ANDROID__
+			if( cddir )
+			{
+				COM_AddGameDirectory (cddir, p);
+			}
+#endif
 			// QuakeSpasm extension: treat '-game missionpack' as '-missionpack'
 			if (!q_strcasecmp(p,"rogue")) {
 				rogue = true;
