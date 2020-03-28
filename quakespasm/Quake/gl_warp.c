@@ -24,7 +24,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern cvar_t r_drawflat;
 
+#ifdef __ANDROID__ // Much faster as does not do glCopyTexSubImage2D all the time
+cvar_t r_oldwater = {"r_oldwater", "1", CVAR_ROM};
+#else
 cvar_t r_oldwater = {"r_oldwater", "0", CVAR_ARCHIVE};
+#endif
 cvar_t r_waterquality = {"r_waterquality", "8", CVAR_NONE};
 cvar_t r_waterwarp = {"r_waterwarp", "1", CVAR_NONE};
 
