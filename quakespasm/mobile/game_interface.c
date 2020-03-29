@@ -19,6 +19,13 @@ void PortableInit(int argc,const char ** argv)
     main_android( argc, argv );
 }
 
+extern void Android_OnMouse( int androidButton, int action, float x, float y);
+
+#define ACTION_DOWN 0
+#define ACTION_UP 1
+#define BUTTON_PRIMARY 1
+#define BUTTON_SECONDARY 2
+
 
 extern int SDL_SendKeyboardKey(Uint8 state, SDL_Scancode scancode);
 
@@ -125,6 +132,12 @@ void PortableAction(int state, int action)
 	    case PORT_ACT_DOWN:
 	        (state)?KeyDownPort(&in_down):KeyUpPort(&in_down);
 	        break;
+        case PORT_ACT_ALT_ATTACK:
+            if ( state )
+                Android_OnMouse(BUTTON_SECONDARY, ACTION_DOWN, 0, 0);
+            else
+                Android_OnMouse(BUTTON_SECONDARY, ACTION_UP, 0, 0);
+            break;
         case PORT_ACT_WEAP1:
             if ( state )
                 PortableCommand("impulse 1\n");
