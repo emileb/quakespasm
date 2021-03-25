@@ -108,7 +108,7 @@ LOCAL_SRC_FILES :=  $(OBJS:.o=.c) \
                     ../mobile/game_interface.c \ \
                     ../../../../Clibs_OpenTouch/quake/android_jni.cpp \
                     ../../../../Clibs_OpenTouch/quake/touch_interface.cpp \
-
+                    ../../../../Clibs_OpenTouch/touch_interface_base.cpp \
 
 
 LOCAL_LDLIBS := -lEGL -ldl -llog -lz -lGLESv1_CM

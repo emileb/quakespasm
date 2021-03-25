@@ -128,6 +128,10 @@ void PortableAction(int state, int action)
         case PORT_ACT_ALT_ATTACK:
         	MouseButton(state, BUTTON_SECONDARY);
             break;
+		case PORT_ACT_WEAP0:
+			if ( state )
+				PortableCommand("impulse 0\n");
+			break;
         case PORT_ACT_WEAP1:
             if ( state )
                 PortableCommand("impulse 1\n");
@@ -159,8 +163,12 @@ void PortableAction(int state, int action)
         case PORT_ACT_WEAP8:
             if ( state )
                 PortableCommand("impulse 8\n");
-            break;
-	    case PORT_ACT_NEXT_WEP:
+			break;
+		case PORT_ACT_WEAP9:
+			if ( state )
+				PortableCommand("impulse 225\n");
+			break;
+		case PORT_ACT_NEXT_WEP:
 	        if (state)
 	            PortableCommand("impulse 10\n");
 	        break;
@@ -218,12 +226,6 @@ touchscreemode_t PortableGetScreenMode()
 		return TS_GAME;
 	else
 		return TS_MENU;
-}
-
-
-void PortableAutomapControl(float zoom, float x, float y)
-{
-
 }
 
 void PortableBackButton()
