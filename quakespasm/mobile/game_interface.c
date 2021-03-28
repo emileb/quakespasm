@@ -130,7 +130,7 @@ void PortableAction(int state, int action)
             break;
 		case PORT_ACT_WEAP0:
 			if ( state )
-				PortableCommand("impulse 0\n");
+				PortableCommand("impulse 226\n");
 			break;
         case PORT_ACT_WEAP1:
             if ( state )
