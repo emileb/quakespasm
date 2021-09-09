@@ -224,7 +224,7 @@ void PortableCommand(const char * cmd)
 extern keydest_t	key_dest;
 touchscreemode_t PortableGetScreenMode()
 {
-	if( key_dest == key_game )
+	if((key_dest == key_game) && (cls.state == ca_connected) && (cls.demoplayback == false))
 		return TS_GAME;
 	else
 		return TS_MENU;
@@ -342,39 +342,3 @@ void IN_Move_Android (usercmd_t *cmd)
 	if (cl.viewangles[PITCH] < -70)
 		cl.viewangles[PITCH] = -70;
 }
-/*
-void IN_Move_Android (float *movements, int pnum, float frametime)
-{
-	if (quickCommand)
-	{
-		Cmd_ExecuteString(quickCommand, RESTRICT_LOCAL);
-		quickCommand = 0;
-	}
-
-	if( !movements )
-		return;
-
-	movements[0]  += forwardmove * cl_forwardspeed.value;
-	movements[1]  += sidemove   * cl_forwardspeed.value;
-
-	//LOGI("movements[0] = %f, movements[1] = %f",movements[0],movements[1]);
-
-	V_StopPitchDrift (&cl.playerview[pnum]);
-
-	cl.playerview[pnum].viewanglechange[PITCH] -= look_pitch_mouse * 150;
-	look_pitch_mouse = 0;
-	cl.playerview[pnum].viewanglechange[PITCH] += look_pitch_joy * 6;
-
-
-	cl.playerview[pnum].viewanglechange[YAW] += look_yaw_mouse * 300;
-	look_yaw_mouse = 0;
-	cl.playerview[pnum].viewanglechange[YAW] += look_yaw_joy * 6;
-
-
-	if (cl.playerview[pnum].viewanglechange[PITCH] > 80)
-		cl.playerview[pnum].viewanglechange[PITCH] = 80;
-	if (cl.playerview[pnum].viewanglechange[PITCH]< -70)
-		cl.playerview[pnum].viewanglechange[PITCH] = -70;
-}
-
-*/
