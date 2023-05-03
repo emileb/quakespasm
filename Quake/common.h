@@ -299,6 +299,7 @@ struct cache_user_s;
 
 extern	char	com_basedir[MAX_OSPATH];
 extern	char	com_gamedir[MAX_OSPATH];
+extern	char	com_cddir[MAX_OSPATH];
 extern	int	file_from_pak;	// global indicating that file came from a pak
 
 void COM_WriteFile (const char *filename, const void *data, int len);
@@ -381,6 +382,12 @@ extern struct cvar_s	registered;
 extern qboolean		standard_quake, rogue, hipnotic;
 extern qboolean		fitzmode;
 	/* if true, run in fitzquake mode disabling custom quakespasm hacks */
+
+
+inline int ualcharint(uint8_t *bar)
+{
+	return bar[0] | (bar[1] << 8) | (bar[2] << 16) | (bar[3] << 24);
+}
 
 #endif	/* _Q_COMMON_H */
 

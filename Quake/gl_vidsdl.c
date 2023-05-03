@@ -325,6 +325,10 @@ static void VID_Gamma_Init (void)
 		Con_SafePrintf("gamma adjustment not available\n");
 }
 
+#ifdef __ANDROID__
+static int cmd_line_width;
+static int cmd_line_height;
+#endif
 /*
 ======================
 VID_GetCurrentWidth
@@ -332,6 +336,9 @@ VID_GetCurrentWidth
 */
 static int VID_GetCurrentWidth (void)
 {
+#ifdef __ANDROID__
+	return cmd_line_width;
+#endif
 #if defined(USE_SDL2)
 	int w = 0, h = 0;
 	SDL_GetWindowSize(draw_context, &w, &h);
@@ -348,6 +355,9 @@ VID_GetCurrentHeight
 */
 static int VID_GetCurrentHeight (void)
 {
+#ifdef __ANDROID__
+	return cmd_line_height;
+#endif
 #if defined(USE_SDL2)
 	int w = 0, h = 0;
 	SDL_GetWindowSize(draw_context, &w, &h);
@@ -582,6 +592,11 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 	int		fsaa_obtained;
 #if defined(USE_SDL2)
 	int		previous_display;
+#endif
+
+#ifdef __ANDROID__
+    void jwzgles_reset (void);
+    jwzgles_reset();
 #endif
 
 	// so Con_Printfs don't mess us up by forcing vid and snd updates
@@ -1680,6 +1695,7 @@ void	VID_Init (void)
 		if (p && p < com_argc-1)
 		{
 			width = Q_atoi(com_argv[p+1]);
+			cmd_line_width = width;
 
 			if(!COM_CheckParm("-height"))
 				height = width * 3 / 4;
@@ -1689,6 +1705,7 @@ void	VID_Init (void)
 		if (p && p < com_argc-1)
 		{
 			height = Q_atoi(com_argv[p+1]);
+			cmd_line_height = height;
 
 			if(!COM_CheckParm("-width"))
 				width = height * 4 / 3;

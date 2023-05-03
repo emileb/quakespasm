@@ -737,10 +737,16 @@ void IN_MouseMove(usercmd_t *cmd)
 	}
 }
 
+#ifdef __ANDROID__
+void IN_Move_Android (usercmd_t *cmd);
+#endif
 void IN_Move(usercmd_t *cmd)
 {
 	IN_JoyMove(cmd);
 	IN_MouseMove(cmd);
+#ifdef __ANDROID__
+    IN_Move_Android (cmd);
+#endif
 }
 
 void IN_ClearStates (void)

@@ -977,7 +977,11 @@ void ED_LoadFromFile (const char *data)
 	edict_t		*ent = NULL;
 	int		inhibit = 0;
 
+#ifdef __ANDROID__
+	memcpy(&pr_global_struct->time, &sv.time, sizeof(pr_global_struct->time));
+#else
 	pr_global_struct->time = sv.time;
+#endif
 
 	// parse ents
 	while (1)

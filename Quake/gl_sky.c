@@ -42,7 +42,11 @@ gltexture_t	*solidskytexture, *alphaskytexture;
 
 extern cvar_t gl_farclip;
 cvar_t r_fastsky = {"r_fastsky", "0", CVAR_NONE};
+#ifdef __ANDROID__ // Skys super slow on mobile
+cvar_t r_sky_quality = {"r_sky_quality", "4", CVAR_NONE};
+#else
 cvar_t r_sky_quality = {"r_sky_quality", "12", CVAR_NONE};
+#endif
 cvar_t r_skyalpha = {"r_skyalpha", "1", CVAR_NONE};
 cvar_t r_skyfog = {"r_skyfog","0.5",CVAR_NONE};
 
