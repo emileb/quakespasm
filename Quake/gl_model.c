@@ -513,7 +513,13 @@ static void Mod_LoadTextures (lump_t *l)
 		tx = (texture_t *) Hunk_AllocName (sizeof(texture_t) +pixels, loadname );
 		loadmodel->textures[i] = tx;
 
+#ifdef __ANDROID__
+        char *txname = tx->name;
+        char *mtname = mt->name;
+		memcpy (txname, mtname, sizeof(tx->name));
+#else
 		memcpy (tx->name, mt->name, sizeof(tx->name));
+#endif
 		tx->width = mt->width;
 		tx->height = mt->height;
 		// the pixels immediately follow the structures

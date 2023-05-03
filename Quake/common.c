@@ -1352,7 +1352,7 @@ static void COM_CheckRegistered (void)
 	int		h;
 	unsigned short	check[128];
 	int		i;
-
+#ifndef __ANDROID__
 	COM_OpenFile("gfx/pop.lmp", &h, NULL);
 
 	if (h == -1)
@@ -1380,7 +1380,7 @@ static void COM_CheckRegistered (void)
 			Sys_Error ("Corrupted data file.");
 		}
 	}
-
+#endif
 	for (i = 0; com_cmdline[i]; i++)
 	{
 		if (com_cmdline[i]!= ' ')
@@ -1564,6 +1564,7 @@ typedef struct
 
 char	com_gamedir[MAX_OSPATH];
 char	com_basedir[MAX_OSPATH];
+char	com_cddir[MAX_OSPATH] = {0};
 int	file_from_pak;		// ZOID: global indicating that file came from a pak
 
 searchpath_t	*com_searchpaths;
@@ -2329,6 +2330,17 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	// start up with GAMENAME by default (id1)
 	COM_AddGameDirectory (com_basedir, GAMENAME);
 
+#ifdef __ANDROID__
+	i = COM_CheckParm ("-cddir");
+	const char *cddir = NULL;
+	if (i && i < com_argc-1)
+	{
+		q_strlcpy (com_cddir, com_argv[i + 1], sizeof(com_cddir));
+		cddir = com_cddir;
+		Con_Printf ("Using cddir = %s\n", com_cddir);
+		COM_AddGameDirectory (com_cddir, "id1");
+	}
+#endif
 	/* this is the end of our base searchpath:
 	 * any set gamedirs, such as those from -game command line
 	 * arguments or by the 'game' console command will be freed
@@ -2356,6 +2368,12 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 		if (p && COM_CheckParm ("-quoth") && !q_strcasecmp(p, "quoth")) p = NULL;
 		if (p != NULL) {
 			COM_AddGameDirectory (com_basedir, p);
+#ifdef __ANDROID__
+			if( cddir )
+			{
+				COM_AddGameDirectory (cddir, p);
+			}
+#endif
 			// QuakeSpasm extension: treat '-game missionpack' as '-missionpack'
 			if (!q_strcasecmp(p,"rogue")) {
 				rogue = true;
@@ -2648,12 +2666,20 @@ void LOC_LoadFile (const char *file)
 	{
 		q_snprintf(path, sizeof(path), "%s/QuakeEX.kpf", com_basedir);
 		rw = SDL_RWFromFile(path, "rb");
+
 		#if defined(DO_USERDIRS)
 		if (!rw) {
 			q_snprintf(path, sizeof(path), "%s/QuakeEX.kpf", host_parms->userdir);
 			rw = SDL_RWFromFile(path, "rb");
 		}
 		#endif
+
+#ifdef __ANDROID__
+		if(!rw && com_cddir[0])
+		{
+			q_snprintf(path, sizeof(path), "%s/QuakeEX.kpf", com_cddir);
+		}
+#endif
 		if (!rw) goto fail;
 		sz = SDL_RWsize(rw);
 		if (sz <= 0) goto fail;
